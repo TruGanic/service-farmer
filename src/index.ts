@@ -14,7 +14,7 @@ app.use(express.json());
 connectDB();
 
 // Mount Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/farmer/auth', authRoutes);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Farmer App Backend Service is running');
