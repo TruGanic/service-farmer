@@ -91,3 +91,59 @@ export const registerFarmer = async (req: Request, res: Response): Promise<void>
         res.status(500).json({ error: 'Internal server error during registration', details: error.message });
     }
 };
+
+export const loginFarmer = async (req: Request, res: Response): Promise<void> => {
+    const { email, password } = req.body;
+
+    // Validate request body
+    if (!email || !password) {
+        res.status(400).json({ error: 'Missing required fields: email, password' });
+        return;
+    }
+
+    try {
+        // Step A: Authenticate user in Supabase
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        // Step B: Handle Supabase authentication errors
+        if (authError || !authData.user) {
+            console.error('Supabase login error:', authError);
+            res.status(401).json({ error: 'Invalid email or password' });
+            return;
+        }
+
+        // Step C: Extract user.id and access_token
+        const userId = authData.user.id;
+        const accessToken = authData.session.access_token;
+
+        // Step D: Query MongoDB for farmer profile data
+        const farmer = await Farmer.findOne({ authId: userId });
+
+        if (!farmer) {
+            // User exists in Supabase but profile is missing in MongoDB
+            res.status(404).json({ error: 'Farmer profile not found' });
+            return;
+        }
+
+        // Response: Return 200 OK with JWT and profile data (excluding authId and internal IDs)
+        res.status(200).json({
+            message: 'Login successful',
+            token: accessToken,
+            farmer: {
+                username: farmer.username,
+                email: farmer.email,
+                contactNo: farmer.contactNo,
+                farmName: farmer.farmName,
+                totalArea: farmer.totalArea,
+                location: farmer.location,
+                sensorId: farmer.sensorId,
+            },
+        });
+    } catch (error: any) {
+        console.error('Login flow error:', error);
+        res.status(500).json({ error: 'Internal server error during login', details: error.message });
+    }
+};
