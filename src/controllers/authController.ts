@@ -128,11 +128,12 @@ export const loginFarmer = async (req: Request, res: Response): Promise<void> =>
             return;
         }
 
-        // Response: Return 200 OK with JWT and profile data (excluding authId and internal IDs)
+        // Response: Return 200 OK with JWT and profile data
         res.status(200).json({
             message: 'Login successful',
             token: accessToken,
             farmer: {
+                authId: farmer.authId, // Include authId for frontend QR generation
                 username: farmer.username,
                 email: farmer.email,
                 contactNo: farmer.contactNo,
