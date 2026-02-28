@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import authRoutes from './routes/authRoutes';
+import logRoutes from './routes/logRoutes';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ connectDB();
 
 // Mount Routes
 app.use('/api/farmer/auth', authRoutes);
+app.use('/api/farmer/logs', logRoutes);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Farmer App Backend Service is running');
