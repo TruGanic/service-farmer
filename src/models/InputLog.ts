@@ -21,7 +21,7 @@ const InputLogSchema: Schema = new Schema(
         date: { type: Date, required: true },
         inputCategory: {
             type: String,
-            enum: ['Organic Fertilizer', 'Chemical Fertilizer', 'Pesticide'],
+            enum: ['Organic Fertilizer', 'Pesticide'],
             required: true,
         },
         productName: { type: String, required: true },

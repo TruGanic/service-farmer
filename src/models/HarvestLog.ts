@@ -5,6 +5,7 @@ export interface IHarvestLog extends Document {
     zoneId: string;
     batchId: string;
     date: Date;
+    plantedDate: Date;
     cropVariety: string;
     yieldAmount: number;
     marketDestination: string;
@@ -19,6 +20,7 @@ const HarvestLogSchema: Schema = new Schema(
         zoneId: { type: String, required: true },
         batchId: { type: String, required: true },
         date: { type: Date, required: true },
+        plantedDate: { type: Date, required: true },
         cropVariety: { type: String, required: true },
         yieldAmount: { type: Number, required: true }, // in kg
         marketDestination: { type: String, required: true },
