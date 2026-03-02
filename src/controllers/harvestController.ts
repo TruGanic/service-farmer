@@ -43,9 +43,11 @@ export const createHarvestLog = async (req: AuthRequest, res: Response): Promise
             zoneId,
             batchId,
             date: new Date(date),
+            plantedDate: activeBatch.date, // Automatically copy from CropBatch
             cropVariety: activeBatch.cropVariety, // Auto-fetched from the planting record!
             yieldAmount: Number(yieldAmount),
-            marketDestination
+            marketDestination,
+            organicLevel: activeBatch.currentOrganicLevel // Snapshot the organic level at time of harvest
         });
 
         const savedHarvestLog = await newHarvestLog.save();
