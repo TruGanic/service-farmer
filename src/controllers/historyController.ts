@@ -38,19 +38,16 @@ export const getHistory = async (req: AuthRequest, res: Response): Promise<void>
             location: i.zoneId
         }));
 
-        const mappedHarvests = harvests.map(h => {
-            const batch = plantings.find(p => p.batchId === h.batchId);
-            return {
-                id: h._id.toString(),
-                date: new Date(h.date).toISOString().split('T')[0],
-                cropVariety: h.cropVariety,
-                yieldAmount: `${h.yieldAmount} kg`,
-                marketDestination: h.marketDestination,
-                batchId: h.batchId,
-                status: h.status || 'Harvested',
-                organicLevel: batch ? batch.currentOrganicLevel : 'N/A'
-            };
-        });
+        const mappedHarvests = harvests.map(h => ({
+            id: h._id.toString(),
+            date: new Date(h.date).toISOString().split('T')[0],
+            cropVariety: h.cropVariety,
+            yieldAmount: `${h.yieldAmount} kg`,
+            marketDestination: h.marketDestination,
+            batchId: h.batchId,
+            status: h.status || 'Harvested',
+            organicLevel: h.organicLevel // Now directly pulling the hardcoded snapshot from MongoDB
+        }));
 
         res.status(200).json({
             plantings: mappedPlantings,

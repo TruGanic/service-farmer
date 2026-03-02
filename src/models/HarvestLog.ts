@@ -9,6 +9,7 @@ export interface IHarvestLog extends Document {
     cropVariety: string;
     yieldAmount: number;
     marketDestination: string;
+    organicLevel: number;
     status: 'Harvested' | 'Transported';
     createdAt: Date;
     updatedAt: Date;
@@ -24,6 +25,7 @@ const HarvestLogSchema: Schema = new Schema(
         cropVariety: { type: String, required: true },
         yieldAmount: { type: Number, required: true }, // in kg
         marketDestination: { type: String, required: true },
+        organicLevel: { type: Number, required: true },
         status: {
             type: String,
             enum: ['Harvested', 'Transported'],
