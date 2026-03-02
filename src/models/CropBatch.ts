@@ -11,6 +11,7 @@ export interface ICropBatch extends mongooseLib.Document {
     areaCovered: number;
     status: 'Active' | 'Harvested' | 'Failed';
     currentOrganicLevel: number;
+    sensorId: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -30,6 +31,7 @@ const CropBatchSchema: Schema = new mongooseLib.Schema(
             default: 'Active',
         },
         currentOrganicLevel: { type: Number, default: 100 },
+        sensorId: { type: String, required: true },
     },
     { timestamps: true }
 );

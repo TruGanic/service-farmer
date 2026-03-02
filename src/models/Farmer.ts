@@ -8,7 +8,6 @@ export interface IFarmer extends Document {
     farmName: string;
     totalArea: string;
     location: string;
-    sensorId: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -22,7 +21,6 @@ const FarmerSchema: Schema = new Schema(
         farmName: { type: String, required: false },
         totalArea: { type: String, required: false },
         location: { type: String, required: false },
-        sensorId: { type: String, required: false },
     },
     {
         timestamps: true,

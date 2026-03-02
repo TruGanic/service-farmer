@@ -10,8 +10,7 @@ export const registerFarmer = async (req: Request, res: Response): Promise<void>
         password,
         farmName,
         totalArea,
-        location,
-        sensorId,
+        location
     } = req.body;
 
     // Basic validation
@@ -53,8 +52,7 @@ export const registerFarmer = async (req: Request, res: Response): Promise<void>
             email,
             farmName,
             totalArea,
-            location,
-            sensorId,
+            location
         });
 
         const savedFarmer = await newFarmer.save();
@@ -70,8 +68,7 @@ export const registerFarmer = async (req: Request, res: Response): Promise<void>
                 contactNo: savedFarmer.contactNo,
                 farmName: savedFarmer.farmName,
                 totalArea: savedFarmer.totalArea,
-                location: savedFarmer.location,
-                sensorId: savedFarmer.sensorId,
+                location: savedFarmer.location
             }
         });
     } catch (error: any) {
@@ -139,8 +136,7 @@ export const loginFarmer = async (req: Request, res: Response): Promise<void> =>
                 contactNo: farmer.contactNo,
                 farmName: farmer.farmName,
                 totalArea: farmer.totalArea,
-                location: farmer.location,
-                sensorId: farmer.sensorId,
+                location: farmer.location
             },
         });
     } catch (error: any) {

@@ -11,11 +11,11 @@ export const createPlantingLog = async (req: AuthRequest, res: Response): Promis
             return;
         }
 
-        const { zoneId, date, cropVariety, seedQuantity, areaCovered } = req.body;
+        const { zoneId, date, cropVariety, seedQuantity, areaCovered, sensorId } = req.body;
 
         // Basic validation
-        if (!zoneId || !date || !cropVariety || !seedQuantity || !areaCovered) {
-            res.status(400).json({ error: 'Missing required fields' });
+        if (!zoneId || !date || !cropVariety || !seedQuantity || !areaCovered || !sensorId) {
+            res.status(400).json({ error: 'Missing required fields including Sensor ID' });
             return;
         }
 
@@ -45,7 +45,8 @@ export const createPlantingLog = async (req: AuthRequest, res: Response): Promis
             date: new Date(date),
             cropVariety,
             seedQuantity: Number(seedQuantity),
-            areaCovered: Number(areaCovered)
+            areaCovered: Number(areaCovered),
+            sensorId
         });
 
         const savedBatch = await newBatch.save();
