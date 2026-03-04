@@ -21,6 +21,7 @@ export const createPlantingLog = async (req: AuthRequest, res: Response): Promis
 
         // Check for existing active crop batch in the same zone
         const existingActiveBatch = await CropBatch.findOne({
+            authId: farmerId,
             zoneId,
             status: 'Active'
         });
