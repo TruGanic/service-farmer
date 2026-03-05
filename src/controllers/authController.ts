@@ -112,9 +112,10 @@ export const loginFarmer = async (req: Request, res: Response): Promise<void> =>
             return;
         }
 
-        // Step C: Extract user.id and access_token
+        // Step C: Extract user.id, access_token, and refresh_token
         const userId = authData.user.id;
         const accessToken = authData.session.access_token;
+        const refreshToken = authData.session.refresh_token;
 
         // Step D: Query MongoDB for farmer profile data
         const farmer = await Farmer.findOne({ authId: userId });
@@ -129,6 +130,7 @@ export const loginFarmer = async (req: Request, res: Response): Promise<void> =>
         res.status(200).json({
             message: 'Login successful',
             token: accessToken,
+            refreshToken: refreshToken,
             farmer: {
                 authId: farmer.authId, // Include authId for frontend QR generation
                 username: farmer.username,
@@ -142,5 +144,33 @@ export const loginFarmer = async (req: Request, res: Response): Promise<void> =>
     } catch (error: any) {
         console.error('Login flow error:', error);
         res.status(500).json({ error: 'Internal server error during login', details: error.message });
+    }
+};
+
+export const refreshSession = async (req: Request, res: Response): Promise<void> => {
+    const { refresh_token } = req.body;
+
+    if (!refresh_token) {
+        res.status(400).json({ error: 'Missing required field: refresh_token' });
+        return;
+    }
+
+    try {
+        const { data, error } = await supabase.auth.refreshSession({ refresh_token });
+
+        if (error || !data.session) {
+            console.error('Supabase refresh session error:', error);
+            res.status(401).json({ error: 'Invalid or expired refresh token' });
+            return;
+        }
+
+        res.status(200).json({
+            message: 'Session refreshed successfully',
+            token: data.session.access_token,
+            refreshToken: data.session.refresh_token
+        });
+    } catch (error: any) {
+        console.error('Refresh session flow error:', error);
+        res.status(500).json({ error: 'Internal server error during session refresh', details: error.message });
     }
 };
