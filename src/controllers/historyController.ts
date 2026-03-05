@@ -46,7 +46,10 @@ export const getHistory = async (req: AuthRequest, res: Response): Promise<void>
             marketDestination: h.marketDestination,
             batchId: h.batchId,
             status: h.status || 'Harvested',
-            organicLevel: h.organicLevel // Now directly pulling the hardcoded snapshot from MongoDB
+            organicLevel: h.organicLevel, // Now directly pulling the hardcoded snapshot from MongoDB
+            farmerId: authId,
+            plantedDate: h.plantedDate ? new Date(h.plantedDate).toISOString() : '',
+            harvestedDate: new Date(h.date).toISOString()
         }));
 
         res.status(200).json({
