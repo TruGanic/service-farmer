@@ -22,6 +22,10 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Farmer App Backend Service is running');
 });
 
+app.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok', message: 'Farmer App Backend Service is online' });
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
